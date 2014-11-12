@@ -3,9 +3,12 @@
 
 function! ficklefold#ToggleFold()
 	if !exists("b:fold_toggle_options")
-		" By default, use the main three. I rarely use custom expressions or
-		" manual and diff is just for diffing.
+		" By default, use the main three. I rarely use manual and diff is just
+		" for diffing. Only use expr if it has an expression setup.
 		let b:fold_toggle_options = ["syntax", "indent", "marker"]
+		if len(&l:foldexpr) > 1
+			let b:fold_toggle_options += ["expr"]
+		endif
 	endif
 
 	" Find the current setting in the list
@@ -21,4 +24,7 @@ endfunction
 function! ficklefold#FoldParagraphs()
     setlocal foldmethod=expr
     setlocal fde=getline(v:lnum)=~'^\\s*$'&&getline(v:lnum+1)=~'\\S'?'<1':1
+    if exists("b:fold_toggle_options")
+        let b:fold_toggle_options += ["expr"]
+    endif
 endfunction
