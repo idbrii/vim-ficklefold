@@ -6,4 +6,7 @@ if !exists("g:ficklefold_no_mappings") || !g:ficklefold_no_mappings
 endif
 
 command! FoldToggle call ficklefold#ToggleFold()
+
+command! -nargs=* FoldAllButMatches call ficklefold#FoldAllButMatches(<q-args>)
 command! FoldParagraphs call ficklefold#FoldParagraphs()
+

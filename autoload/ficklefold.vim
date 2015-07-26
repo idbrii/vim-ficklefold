@@ -21,6 +21,38 @@ function! ficklefold#ToggleFold()
 	echo 'foldmethod is now ' . &l:foldmethod
 endfunction
 
+
+" Fold away every line that doesn't match the query.
+"
+" Works kind of like :print in :g/re/p, but within the buffer. Pass empty
+" query to clear created folds.
+"
+" Will destroy manual folds.
+"
+" Source: https://www.reddit.com/r/vim/comments/3ens31/gp_with_syntax_highlighting/ctgotf3
+function! ficklefold#FoldAllButMatches(query)
+    " Clear all manual folds.
+    silent! g/^/norm! zD
+
+    if len(a:query) > 0
+        let b:ficklefold_cached_foldmethod = &foldmethod
+        let b:ficklefold_cached_foldminlines = &foldminlines
+
+        set foldmethod=manual foldminlines=0
+        exec 'v/'. a:query .'/fold'
+
+    elseif exists('b:ficklefold_cached_foldmethod')
+        let &foldmethod = b:ficklefold_cached_foldmethod
+        let &foldminlines = b:ficklefold_cached_foldminlines
+        unlet b:ficklefold_cached_foldmethod
+        unlet b:ficklefold_cached_foldminlines
+
+    else
+        echoerr "FoldAllButMatches requires an argument to search for."
+    endif
+endf
+
+
 function! ficklefold#FoldParagraphs()
     setlocal foldmethod=expr
     setlocal fde=getline(v:lnum)=~'^\\s*$'&&getline(v:lnum+1)=~'\\S'?'<1':1
@@ -28,3 +60,4 @@ function! ficklefold#FoldParagraphs()
         let b:fold_toggle_options += ["expr"]
     endif
 endfunction
+
