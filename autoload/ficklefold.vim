@@ -1,6 +1,4 @@
 " Easily switch between different fold methods
-"
-
 function! ficklefold#ToggleFold()
 	if !exists("b:fold_toggle_options")
 		" By default, use the main three. I rarely use manual and diff is just
@@ -53,6 +51,7 @@ function! ficklefold#FoldAllButMatches(query)
 endf
 
 
+" Fold paragraphs of prose.
 function! ficklefold#FoldParagraphs()
     setlocal foldmethod=expr
     setlocal fde=getline(v:lnum)=~'^\\s*$'&&getline(v:lnum+1)=~'\\S'?'<1':1

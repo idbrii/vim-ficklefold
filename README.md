@@ -1,7 +1,14 @@
 vim-ficklefold
 ==============
 
-Facilitates folding: Toggle between fold methods and apply fold expressions.
+Facilitates folding: Toggle between fold methods, apply fold expressions, create folds.
+
+
+ToggleFold
+==========
+Easily switch between different fold methods: syntax, indent, marker, and (if
+foldexpr is set) expr.
+
 
 FoldAllButMatches
 =================
@@ -14,3 +21,8 @@ messages.
 
 You can use FoldAllButMatches with no args to clear the folds (it also
 restores foldmethod and foldminlines).
+
+
+FoldParagraphs
+==============
+Fold paragraphs of prose.
