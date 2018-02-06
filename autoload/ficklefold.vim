@@ -1,13 +1,23 @@
-" Easily switch between different fold methods
-function! ficklefold#ToggleFold()
+function! ficklefold#init_options()
 	if !exists("b:fold_toggle_options")
-		" By default, use the main three. I rarely use manual and diff is just
+		" By default, use the main two. I rarely use manual and diff is just
 		" for diffing. Only use expr if it has an expression setup.
-		let b:fold_toggle_options = ["syntax", "indent", "marker"]
+		let b:fold_toggle_options = ["indent", "marker"]
 		if len(&l:foldexpr) > 1
 			let b:fold_toggle_options += ["expr"]
 		endif
+		" Only use syntax if already enabled. See also
+		" david#indent#try_use_syntax_folds() for a good way to detect if it's
+		" usable.
+		if &l:foldmethod == "syntax"
+			let b:fold_toggle_options += ["syntax"]
+		endif
 	endif
+endf
+
+" Easily switch between different fold methods
+function! ficklefold#ToggleFold()
+	call ficklefold#init_options()
 
 	" Find the current setting in the list
 	let i = match(b:fold_toggle_options, &foldmethod)
