@@ -1,33 +1,33 @@
 function! ficklefold#init_options()
-	if !exists("b:fold_toggle_options")
-		" By default, use the main two. I rarely use manual and diff is just
-		" for diffing. Only use expr if it has an expression setup.
-		let b:fold_toggle_options = ["indent", "marker"]
-		if len(&l:foldexpr) > 1
-			let b:fold_toggle_options += ["expr"]
-		endif
-		" Only use syntax if already enabled. See also
-		" david#indent#try_use_syntax_folds() for a good way to detect if it's
-		" usable.
-		if &l:foldmethod == "syntax"
-			" Syntax at the start.
-			let b:fold_toggle_options = ["syntax"] + b:fold_toggle_options
-		endif
-	endif
+    if !exists("b:fold_toggle_options")
+        " By default, use the main two. I rarely use manual and diff is just
+        " for diffing. Only use expr if it has an expression setup.
+        let b:fold_toggle_options = ["indent", "marker"]
+        if len(&l:foldexpr) > 1
+            let b:fold_toggle_options += ["expr"]
+        endif
+        " Only use syntax if already enabled. See also
+        " david#indent#try_use_syntax_folds() for a good way to detect if it's
+        " usable.
+        if &l:foldmethod == "syntax"
+            " Syntax at the start.
+            let b:fold_toggle_options = ["syntax"] + b:fold_toggle_options
+        endif
+    endif
 endf
 
 " Easily switch between different fold methods
 function! ficklefold#ToggleFold()
-	call ficklefold#init_options()
+    call ficklefold#init_options()
 
-	" Find the current setting in the list
-	let i = match(b:fold_toggle_options, &foldmethod)
+    " Find the current setting in the list
+    let i = match(b:fold_toggle_options, &foldmethod)
 
-	" Advance to the next setting
-	let i = (i + 1) % len(b:fold_toggle_options)
-	let &l:foldmethod = b:fold_toggle_options[i]
+    " Advance to the next setting
+    let i = (i + 1) % len(b:fold_toggle_options)
+    let &l:foldmethod = b:fold_toggle_options[i]
 
-	echo 'foldmethod is now ' . &l:foldmethod
+    echo 'foldmethod is now ' . &l:foldmethod
 endfunction
 
 
