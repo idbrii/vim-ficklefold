@@ -10,7 +10,8 @@ function! ficklefold#init_options()
 		" david#indent#try_use_syntax_folds() for a good way to detect if it's
 		" usable.
 		if &l:foldmethod == "syntax"
-			let b:fold_toggle_options += ["syntax"]
+			" Syntax at the start.
+			let b:fold_toggle_options = ["syntax"] + b:fold_toggle_options
 		endif
 	endif
 endf
