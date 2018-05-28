@@ -23,6 +23,13 @@ function! ficklefold#ToggleFold()
     " Find the current setting in the list
     let i = match(b:fold_toggle_options, &foldmethod)
 
+    " FastFold will modify fdm as soon as it's set to 'syntax' (see
+    " OptionSet)! So if we couldn't find the fdm and it's 'manual' (fastfold
+    " mode), it's effectively syntax.
+    if i < 0 && &foldmethod == "manual"
+        let i = match(b:fold_toggle_options, 'syntax')
+    endif
+
     " Advance to the next setting
     let i = (i + 1) % len(b:fold_toggle_options)
     let &l:foldmethod = b:fold_toggle_options[i]
